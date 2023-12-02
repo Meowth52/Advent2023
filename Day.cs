@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Windows.Controls;
 
 namespace Advent2023
 {
@@ -40,15 +41,15 @@ namespace Advent2023
         {
             return input.Replace("\r\n", "");
         }
-        public string[] ParseStringArray(string input)
+        public string[] ParseStringArray(string input,string splitter = "\r\n")
         {
-            string Input = input.Replace("\r\n", "_");
-            return Input.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+            string Input = input.Replace(splitter, "_");
+            return Input.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
         }
         public List<string[]> ParseListOfStringArraysLineLine(string input)
         {
             List<string[]> ReturnList = new List<string[]>();
-            string[] RawInstructions = input.Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries);
+            string[] RawInstructions = input.Split(new[] { "\r\n\r\n" }, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
             foreach (string s in RawInstructions)
             {
                 ReturnList.Add(s.Split(new[] { "\r\n" }, StringSplitOptions.RemoveEmptyEntries));
