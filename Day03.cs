@@ -10,20 +10,14 @@ namespace Advent2023
     public class Day03 : Day
     {
         string[] Instructions;
+        Dictionary<Coordinate, (int, Coordinate)> numbers; //Top left, number, bottom right
+        Dictionary<Coordinate, char> Thingimajings;
         public Day03(string _input) : base(_input)
         {
             string Input = this.CheckFile(_input);
             Instructions = this.ParseStringArray(Input);
-        }
-        public override Tuple<string, string> GetResult()
-        {
-            return Tuple.Create(GetPartOne(), GetPartTwo());
-        }
-        public string GetPartOne()
-        {
-            int ReturnValue = 0;
-            Dictionary<Coordinate, (int, Coordinate)> numbers = new Dictionary<Coordinate, (int, Coordinate)>(); //Top left, number, bottom right
-            Dictionary<Coordinate, char> Thingimajings = new Dictionary<Coordinate, char>();
+            numbers = new Dictionary<Coordinate, (int, Coordinate)>(); //Top left, number, bottom right
+            Thingimajings = new Dictionary<Coordinate, char>();
             for (int y = 0; y < Instructions.Length; y++)
             {
                 string instruction = Instructions[y];
@@ -61,6 +55,14 @@ namespace Advent2023
                     numbers.Add(new Coordinate(0, y + 1), (currentDigit, BottomRight));
                 }
             }
+        }
+        public override Tuple<string, string> GetResult()
+        {
+            return Tuple.Create(GetPartOne(), GetPartTwo());
+        }
+        public string GetPartOne()
+        {
+            int ReturnValue = 0;
             List<int> debug = new List<int>();
             foreach (KeyValuePair<Coordinate, (int, Coordinate)> number in numbers)
             {
@@ -80,7 +82,21 @@ namespace Advent2023
         public string GetPartTwo()
         {
             int ReturnValue = 0;
-
+            foreach (KeyValuePair<Coordinate, char> thingimajing in Thingimajings)
+            {
+                List<int> count = new List<int> ();
+                foreach (KeyValuePair<Coordinate, (int, Coordinate)> number in numbers)
+                {
+                    if (thingimajing.Key.IsBetween(number.Key, number.Value.Item2))
+                    {
+                        count.Add(number.Value.Item1);
+                    }
+                }
+                if (count.Count == 2)
+                {
+                    ReturnValue += count[0] * count[1];
+                }
+            }
             return ReturnValue.ToString();
         }
     }
