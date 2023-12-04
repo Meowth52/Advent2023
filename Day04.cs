@@ -9,16 +9,16 @@ namespace Advent2023
 {
     public class Day04 : Day
     {
-        Dictionary<int,List<HashSet<int>>> Numbers;
-        
+        Dictionary<int, List<HashSet<int>>> Numbers;
+
         public Day04(string _input) : base(_input)
         {
             string Input = this.CheckFile(_input);
             string[] strings = this.ParseStringArray(Input);
             Numbers = new Dictionary<int, List<HashSet<int>>>();
-            foreach(string s in strings)
+            foreach (string s in strings)
             {
-                List<HashSet<int>> Listylist= new List<HashSet<int>>();
+                List<HashSet<int>> Listylist = new List<HashSet<int>>();
                 string[] scptruings = s.Split(':');
                 int index = this.ParseListOfInteger(scptruings[0]).First();
                 string[] schtrungs = scptruings[1].Split('|');
@@ -35,17 +35,17 @@ namespace Advent2023
         public string GetPartOne()
         {
             int ReturnValue = 0;
-            foreach(KeyValuePair<int, List<HashSet<int>>> row in Numbers)
+            foreach (KeyValuePair<int, List<HashSet<int>>> row in Numbers)
             {
                 int rowValue = 1;
-                foreach(int i in row.Value[1])
+                foreach (int i in row.Value[1])
                 {
                     if (row.Value[0].Contains(i))
                     {
                         rowValue *= 2;
                     }
                 }
-                ReturnValue += rowValue/2; //din mamma kan vara en fulfix
+                ReturnValue += rowValue / 2; //din mamma kan vara en fulfix
             }
 
             return ReturnValue.ToString();
@@ -53,7 +53,7 @@ namespace Advent2023
         public string GetPartTwo()
         {
             int ReturnValue = 0;
-            for(int i = 1;i<=Numbers.Count;i++)
+            for (int i = 1; i <= Numbers.Count; i++)
             {
                 var row = Numbers[i];
                 int matches = 0;
