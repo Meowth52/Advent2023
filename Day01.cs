@@ -52,7 +52,7 @@ namespace Advent2023
                 string sch = s;
                 for (int i = 1; i <= 9; i++)
                 {
-                    sch = sch.Replace(Strints[i - 1], Strints[i - 1] + i.ToString() + Strints[i - 1]);
+                    sch = sch.Replace(Strints[i - 1], Strints[i - 1] + i.ToString() + Strints[i - 1]); //-.-
                 }
                 instructionList.Add(sch);
             }
