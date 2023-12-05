@@ -106,5 +106,18 @@ namespace Advent2023
             }
             return ReturnList;
         }
+        public List<List<long>> ParseListOfLongerLists(string input)
+        {
+            List<List<long>> ReturnList = new List<List<long>>();
+            string Input = input.Replace("\r\n", "_");
+            string[] RawInstructions = Input.Split(new[] { '_' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (string s in RawInstructions)
+            {
+                List<long> LongList= this.ParseListOfLong(s);
+                if (LongList.Count > 0)
+                    ReturnList.Add(LongList);
+            }
+            return ReturnList;
+        }
     }
 }
