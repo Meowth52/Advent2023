@@ -9,11 +9,16 @@ namespace Advent2023
 {
     public class Day06 : Day
     {
-        List<int> Instructions;
+        List<Tuple<int, int>> Instructions;
         public Day06(string _input) : base(_input)
         {
             string Input = this.CheckFile(_input);
-            Instructions = this.ParseListOfInteger(Input);
+            List<List<int>> lists = this.ParseListOfIntegerLists(Input);
+            Instructions = new List<Tuple<int, int>>();
+            for(int i = 0; i < lists[0].Count(); i++)
+            {
+                Instructions.Add(new Tuple<int, int>(lists[0][i], lists[1][i]));
+            }
         }
         public override Tuple<string, string> GetResult()
         {
