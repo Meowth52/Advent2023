@@ -55,11 +55,12 @@ namespace Advent2023
             long Iteration = 0;
             List<string> CurrentPaths = Paths.Keys.Where(x => x.Last() == 'A').ToList();
             List<string> FirstPaths = new List<string>();
+            Dictionary<int, int> FirstStart = new Dictionary<int, int>();
             int InstructionIndex = 0;
             Dictionary<int,List<long>> EndDic = new Dictionary<int,List<long>>();
             for(int i = 0;i<CurrentPaths.Count;i++)
             {
-                EndDic.Add(i, new List<long>());
+                EndDic.Add(i, new List<long>() { 0 });
             }
             int counter = 0;
             while (counter<6)
@@ -68,14 +69,16 @@ namespace Advent2023
                 for(int i = 0; i < CurrentPaths.Count;i++)
                 {
                     CurrentPaths[i] = Paths[CurrentPaths[i]][Instructions[InstructionIndex]];
-                    if (CurrentPaths[i].Last()=='Z'&& EndDic[i].Count==0)
-                        EndDic[i].Add(Iteration);
+                    if (CurrentPaths[i].Last() == 'Z' && EndDic[i][0] != 0 && EndDic[i].Count == 1)
+                    {
+                        EndDic[i].Add(Iteration- EndDic[i][0]);
+                        counter++;
+                    }
                     if (FirstPaths.Count() > 0 && CurrentPaths[i] == FirstPaths[i] && InstructionIndex == Instructions.Count()-1)
                     {
-                        if (EndDic[i].Count() < 2)
+                        if (EndDic[i][0] == 0)
                         {
-                            EndDic[i].Add(Iteration);
-                            counter++;
+                            EndDic[i][0] =Iteration- Instructions.Count();
                         }
                     }
 
@@ -84,25 +87,27 @@ namespace Advent2023
                 if (InstructionIndex >= Instructions.Count())
                 {
                     if (FirstPaths.Count() == 0)
+                    {
                         FirstPaths = new List<string>(CurrentPaths);
+                    }
                     InstructionIndex = 0;
                 }
             }
-            int schmiterator = 0;
+            long schmiterator = 1;
             while (true)
             {
                 bool nope = false;
-                long IsThisIt = schmiterator * EndDic[0][1] + EndDic[0][0];
+                //long IsThisIt = schmiterator * EndDic[0][0] + EndDic[0][1];
                 foreach(List<long> eh in EndDic.Values)
                 {
-                    if(IsThisIt != schmiterator * eh[1] + eh[0])
+                    if(!(schmiterator % eh[0] == 0))
                         nope = true;
                 }
                 if (!nope)
                 {
-                    return IsThisIt.ToString();
+                    return (schmiterator  + EndDic[0][1]).ToString();
                 }
-                schmiterator++;
+                schmiterator += EndDic[0][0];
             }
             return Iteration.ToString();
         }
