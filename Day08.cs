@@ -38,7 +38,7 @@ namespace Advent2023
         public string GetPartOne()
         {
             long ReturnValue = 0;
-            string CurrentPath = Paths.Keys.First();
+            string CurrentPath = "AAA";
             int InstructionIndex = 0;
             while (CurrentPath!="ZZZ")
             {
@@ -52,9 +52,59 @@ namespace Advent2023
         }
         public string GetPartTwo()
         {
-            int ReturnValue = 0;
+            long Iteration = 0;
+            List<string> CurrentPaths = Paths.Keys.Where(x => x.Last() == 'A').ToList();
+            List<string> FirstPaths = new List<string>();
+            int InstructionIndex = 0;
+            Dictionary<int,List<long>> EndDic = new Dictionary<int,List<long>>();
+            for(int i = 0;i<CurrentPaths.Count;i++)
+            {
+                EndDic.Add(i, new List<long>());
+            }
+            int counter = 0;
+            while (counter<6)
+            {
+                Iteration++;
+                for(int i = 0; i < CurrentPaths.Count;i++)
+                {
+                    CurrentPaths[i] = Paths[CurrentPaths[i]][Instructions[InstructionIndex]];
+                    if (CurrentPaths[i].Last()=='Z'&& EndDic[i].Count==0)
+                        EndDic[i].Add(Iteration);
+                    if (FirstPaths.Count() > 0 && CurrentPaths[i] == FirstPaths[i] && InstructionIndex == Instructions.Count()-1)
+                    {
+                        if (EndDic[i].Count() < 2)
+                        {
+                            EndDic[i].Add(Iteration);
+                            counter++;
+                        }
+                    }
 
-            return ReturnValue.ToString();
+                }
+                InstructionIndex++;
+                if (InstructionIndex >= Instructions.Count())
+                {
+                    if (FirstPaths.Count() == 0)
+                        FirstPaths = new List<string>(CurrentPaths);
+                    InstructionIndex = 0;
+                }
+            }
+            int schmiterator = 0;
+            while (true)
+            {
+                bool nope = false;
+                long IsThisIt = schmiterator * EndDic[0][1] + EndDic[0][0];
+                foreach(List<long> eh in EndDic.Values)
+                {
+                    if(IsThisIt != schmiterator * eh[1] + eh[0])
+                        nope = true;
+                }
+                if (!nope)
+                {
+                    return IsThisIt.ToString();
+                }
+                schmiterator++;
+            }
+            return Iteration.ToString();
         }
     }
 }
