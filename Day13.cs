@@ -15,21 +15,21 @@ namespace Advent2023
             string Input = this.CheckFile(_input);
             string[] stringPatterns = this.ParseStringArray(Input, "\r\n\r\n");
             Instructions = new List<List<List<List<bool>>>>();
-            foreach(string pattern in stringPatterns)
+            foreach (string pattern in stringPatterns)
             {
-                List<List<bool>> OneDimension= new List<List<bool>>();
-                List<List<bool>> AnotherDimension= new List<List<bool>>();  
+                List<List<bool>> OneDimension = new List<List<bool>>();
+                List<List<bool>> AnotherDimension = new List<List<bool>>();
                 string[] rows = this.ParseStringArray(pattern);
-                for (int i = 0; i < rows[0].Length;i++)
+                for (int i = 0; i < rows[0].Length; i++)
                 {
                     OneDimension.Add(new List<bool>());
                 }
                 foreach (string row in rows)
                 {
                     List<bool> boolRow = new List<bool>();
-                    for(int i = 0;i<row.Length;i++)
+                    for (int i = 0; i < row.Length; i++)
                     {
-                        boolRow.Add(row[i]=='#');
+                        boolRow.Add(row[i] == '#');
                         OneDimension[i].Add(row[i] == '#');
                     }
                     AnotherDimension.Add(boolRow);
@@ -46,32 +46,50 @@ namespace Advent2023
         }
         public string GetPartOne()
         {
+            return GetAnswere(0).ToString();
+        }
+        public string GetPartTwo()
+        {
+            return GetAnswere(1).ToString();
+        }
+        public int CompareLists(List<bool> one, List<bool> two)
+        {
+            int diffrence = 0;
+            for (int i = 0; i < one.Count; i++)
+                if (one[i] != two[i])
+                {
+                    diffrence++;
+                }
+            return diffrence;
+        }
+        public int GetAnswere(int smudginess)
+        {
             int ReturnValue = 0;
             foreach (var pattern in Instructions)
             {
                 bool otherDimension = false;
-                foreach(var dimension in pattern)
+                foreach (var dimension in pattern)
                 {
-                    for(int i = 0;i<dimension.Count-1;i++)
+                    for (int i = 0; i < dimension.Count - 1; i++)
                     {
-                        if (this.CompareLists(dimension[i],dimension[i+1]))
+                        int diffrentness = this.CompareLists(dimension[i], dimension[i + 1]);
+                        if (diffrentness <= smudginess)
                         {
                             int left = i;
-                            int right = i+1;
-                            bool hit = true;
-                            while (left > 0 && right < dimension.Count-1)
+                            int right = i + 1;
+                            while (left > 0 && right < dimension.Count - 1)
                             {
                                 left--;
                                 right++;
-                                if (!this.CompareLists( dimension[left],dimension[right]))
+                                diffrentness += this.CompareLists(dimension[left], dimension[right]);
+                                if (diffrentness > smudginess)
                                 {
-                                    hit = false;
                                     break;
                                 }
                             }
-                            if(hit)
+                            if (diffrentness == smudginess)
                             {
-                                int score = i+1;
+                                int score = i + 1;
                                 if (otherDimension)
                                     score *= 100;
                                 ReturnValue += score;
@@ -79,27 +97,10 @@ namespace Advent2023
                             }
                         }
                     }
-                    otherDimension= true;
+                    otherDimension = true;
                 }
             }
-            return ReturnValue.ToString();
-        }
-        public string GetPartTwo()
-        {
-            int ReturnValue = 0;
-
-            return ReturnValue.ToString();
-        }
-        public bool CompareLists(List<bool> one , List<bool> two)
-        {
-            bool same = true;
-            for(int i = 0; i < one.Count;i++)
-                if (one[i] != two[i])
-                {
-                    same = false;
-                    break;
-                }
-            return same;
+            return ReturnValue;
         }
     }
 }
