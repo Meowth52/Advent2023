@@ -83,11 +83,10 @@ namespace Advent2023
                         Stones = Stones.OrderByDescending(x => x.y).ToList();
                         break;
                 }
-                foreach (Coordinate stone in Stones)
-                {
-                    ReturnValue += (YMax + 1) - stone.y;
-                }
-                return ReturnValue.ToString();
+            }
+            foreach (Coordinate stone in Stones)
+            {
+                ReturnValue += (YMax + 1) - stone.y;
             }
             return ReturnValue.ToString();
         }
