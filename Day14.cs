@@ -25,22 +25,22 @@ namespace Advent2023
                 {
                     if (strings[y][x] != '.')
                     {
-                        if(strings[y][x] == 'O')
+                        if (strings[y][x] == 'O')
                             Stones.Add(new Coordinate(x, y));
                         else
-                        StillStones.Add(new Coordinate(x, y));
+                            StillStones.Add(new Coordinate(x, y));
                     }
                 }
             }
             for (int x = 0; x < strings[0].Length; x++)
             {
-                Stones.Add(new Coordinate(x, -1));
-                Stones.Add(new Coordinate(x, YMax+1));
+                StillStones.Add(new Coordinate(x, -1));
+                StillStones.Add(new Coordinate(x, YMax + 1));
             }
             for (int y = 0; y < strings.Length; y++)
             {
-                Stones.Add(new Coordinate(-1,y ));
-                Stones.Add(new Coordinate(strings[0].Length, y));
+                StillStones.Add(new Coordinate(-1, y));
+                StillStones.Add(new Coordinate(strings[0].Length, y));
             }
         }
         public override Tuple<string, string> GetResult()
@@ -53,41 +53,70 @@ namespace Advent2023
             RollTheStones('S');
             foreach (Coordinate stone in Stones)
             {
-                    ReturnValue += (YMax + 1) - stone.y;
+                ReturnValue += (YMax + 1) - stone.y;
             }
             return ReturnValue.ToString();
         }
         public string GetPartTwo()
         {
-            int ReturnValue = 0;
+            List<int> ICanHasPattern = new List<int>();
             List<char> Directions = new List<char>
             {
-                'S','E','N','W'
+                'W','S','E','N'
             };
-            for (int i = 1; i <= 1000000000; i++)
+            for (int i = 1; i <= 1000; i++)
             {
-                int direction = i % 4;
-                RollTheStones(Directions[direction]);
-                switch (direction)
+                for (int direction = 0; direction < 4; direction++)
                 {
-                    case 0:
-                        Stones = Stones.OrderBy(x => x.x).ToList();
-                        break;
-                    case 1:
-                        Stones = Stones.OrderByDescending(x => x.y).ToList();
-                        break;
-                    case 2:
-                        Stones = Stones.OrderBy(x => x.x).ToList();
-                        break;
-                    case 3:
-                        Stones = Stones.OrderByDescending(x => x.y).ToList();
-                        break;
+                    switch (direction)
+                    {
+                        case 0:
+                            Stones = Stones.OrderBy(x => x.y).ToList();
+                            RollTheStones(Directions[direction]);
+                            break;
+                        case 1:
+                            Stones = Stones.OrderBy(x => x.x).ToList();
+                            RollTheStones(Directions[direction]);
+                            break;
+                        case 2:
+                            Stones = Stones.OrderByDescending(x => x.y).ToList();
+                            RollTheStones(Directions[direction]);
+                            break;
+                        case 3:
+                            Stones = Stones.OrderByDescending(x => x.x).ToList();
+                            RollTheStones(Directions[direction]);
+                            break;
+                    }
+                }
+                int TheNextOne = 0;
+                foreach (Coordinate stone in Stones)
+                {
+                    TheNextOne += (YMax + 1) - stone.y;
+                }
+                ICanHasPattern.Add(TheNextOne);
+            }
+            List<int> CommonPatterPlease = new List<int>();
+            int IteratorOne = 100;
+            CommonPatterPlease.Add(ICanHasPattern[IteratorOne]);
+            CommonPatterPlease.Add(ICanHasPattern[IteratorOne + 1]);
+            CommonPatterPlease.Add(ICanHasPattern[IteratorOne + 2]);
+            CommonPatterPlease.Add(ICanHasPattern[IteratorOne + 3]);
+            CommonPatterPlease.Add(ICanHasPattern[IteratorOne + 4]);
+            int Start = 100;
+            bool yes = false;
+            while (!yes)
+            {
+                IteratorOne++;
+                yes = true;
+                for (int ii = 0; ii < CommonPatterPlease.Count; ii++)
+                {
+                    if (CommonPatterPlease[ii] != ICanHasPattern[IteratorOne + ii])
+                    {
+                        yes = false; break;
+                    }
                 }
             }
-            foreach (Coordinate stone in Stones)
-            {
-                ReturnValue += (YMax + 1) - stone.y;
-            }
+            int ReturnValue = 1000000000 % (IteratorOne - Start);
             return ReturnValue.ToString();
         }
         public void RollTheStones(char direction)
@@ -97,9 +126,10 @@ namespace Advent2023
                 Coordinate GhostStone = new Coordinate(stone);
                 GhostStone.MoveNSteps(direction);
                 while (!Stones.Contains(GhostStone) && !StillStones.Contains(GhostStone))
-                    {
-                        stone.MoveNSteps(direction);
-                    }
+                {
+                    stone.MoveNSteps(direction);
+                    GhostStone.MoveNSteps(direction);
+                }
             }
         }
     }
