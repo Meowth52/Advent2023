@@ -62,7 +62,7 @@ namespace Advent2023
             List<int> ICanHasPattern = new List<int>();
             List<char> Directions = new List<char>
             {
-                'W','S','E','N'
+                'S','W','N','E',
             };
             for (int i = 1; i <= 1000; i++)
             {
@@ -75,7 +75,7 @@ namespace Advent2023
                             RollTheStones(Directions[direction]);
                             break;
                         case 1:
-                            Stones = Stones.OrderBy(x => x.x).ToList();
+                            Stones = Stones.OrderByDescending(x => x.x).ToList();
                             RollTheStones(Directions[direction]);
                             break;
                         case 2:
@@ -83,7 +83,7 @@ namespace Advent2023
                             RollTheStones(Directions[direction]);
                             break;
                         case 3:
-                            Stones = Stones.OrderByDescending(x => x.x).ToList();
+                            Stones = Stones.OrderBy(x => x.x).ToList();
                             RollTheStones(Directions[direction]);
                             break;
                     }
