@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Text.RegularExpressions;
+using System.Collections.Specialized;
 
 namespace Advent2023
 {
@@ -46,7 +47,7 @@ namespace Advent2023
                 if (s.Contains('='))
                 {
                     int lensStrenght = this.ParseListOfInteger(s).First();
-                    if (Boxes[id].Lenses.ContainsKey(lensId))
+                    if (Boxes[id].Lenses.Contains(lensId))
                         Boxes[id].Lenses[lensId] = lensStrenght;
                     else
                     {
@@ -57,7 +58,7 @@ namespace Advent2023
                 else
                 {
 
-                    if (Boxes[id].Lenses.ContainsKey(lensId))
+                    if (Boxes[id].Lenses.Contains(lensId))
                     {
                         Boxes[id].Lenses.Remove(lensId);
                     }
@@ -90,11 +91,11 @@ namespace Advent2023
     public class Box
     {
         public int Id;
-        public Dictionary<string,int> Lenses;
+        public ListDictionary Lenses;
         public Box(int id)
         {
             Id = id;
-            Lenses = new Dictionary<string, int>();
+            Lenses = new ListDictionary();
         }
     }
 }
