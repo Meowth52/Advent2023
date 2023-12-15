@@ -9,15 +9,15 @@ namespace Advent2023
 {
     public class Day14 : Day
     {
-        List<Coordinate> Stones;
-        List<Coordinate> StillStones;
+        HashSet<Coordinate> Stones;
+        HashSet<Coordinate> StillStones;
         int YMax;
         public Day14(string _input) : base(_input)
         {
             string Input = this.CheckFile(_input);
             string[] strings = this.ParseStringArray(Input);
-            Stones = new List<Coordinate>();
-            StillStones = new List<Coordinate>();
+            Stones = new HashSet<Coordinate>();
+            StillStones = new HashSet<Coordinate>();
             YMax = strings.Length - 1;
             for (int y = 0; y < strings.Length; y++)
             {
@@ -64,26 +64,26 @@ namespace Advent2023
             {
                 'S','W','N','E',
             };
-            for (int i = 1; i <= 1000; i++)
+            for (int i = 1; i <= 500; i++)
             {
                 for (int direction = 0; direction < 4; direction++)
                 {
                     switch (direction)
                     {
                         case 0:
-                            Stones = Stones.OrderBy(x => x.y).ToList();
+                            Stones = Stones.OrderBy(x => x.y).ToHashSet();
                             RollTheStones(Directions[direction]);
                             break;
                         case 1:
-                            Stones = Stones.OrderByDescending(x => x.x).ToList();
+                            Stones = Stones.OrderBy(x => x.x).ToHashSet();
                             RollTheStones(Directions[direction]);
                             break;
                         case 2:
-                            Stones = Stones.OrderByDescending(x => x.y).ToList();
+                            Stones = Stones.OrderByDescending(x => x.y).ToHashSet();
                             RollTheStones(Directions[direction]);
                             break;
                         case 3:
-                            Stones = Stones.OrderBy(x => x.x).ToList();
+                            Stones = Stones.OrderByDescending(x => x.x).ToHashSet();
                             RollTheStones(Directions[direction]);
                             break;
                     }
@@ -96,13 +96,13 @@ namespace Advent2023
                 ICanHasPattern.Add(TheNextOne);
             }
             List<int> CommonPatterPlease = new List<int>();
-            int IteratorOne = 100;
+            int IteratorOne = 300;
             CommonPatterPlease.Add(ICanHasPattern[IteratorOne]);
             CommonPatterPlease.Add(ICanHasPattern[IteratorOne + 1]);
             CommonPatterPlease.Add(ICanHasPattern[IteratorOne + 2]);
             CommonPatterPlease.Add(ICanHasPattern[IteratorOne + 3]);
             CommonPatterPlease.Add(ICanHasPattern[IteratorOne + 4]);
-            int Start = 100;
+            int Start = 300;
             bool yes = false;
             while (!yes)
             {
@@ -116,21 +116,23 @@ namespace Advent2023
                     }
                 }
             }
-            int ReturnValue = 1000000000 % (IteratorOne - Start);
+            int ReturnValue = ICanHasPattern[Start + ((1000000000 - Start) % (IteratorOne - Start)) - 1];
             return ReturnValue.ToString();
         }
         public void RollTheStones(char direction)
         {
-            foreach (Coordinate stone in Stones)
+            List<Coordinate> slowStones = new List<Coordinate>(Stones);
+            foreach (Coordinate stone in slowStones)
             {
                 Coordinate GhostStone = new Coordinate(stone);
                 GhostStone.MoveNSteps(direction);
-                while (!Stones.Contains(GhostStone) && !StillStones.Contains(GhostStone))
+                while (!slowStones.Contains(GhostStone) && !StillStones.Contains(GhostStone))
                 {
                     stone.MoveNSteps(direction);
                     GhostStone.MoveNSteps(direction);
                 }
             }
+            Stones = slowStones.ToHashSet();
         }
     }
 }
