@@ -10,6 +10,7 @@ namespace Advent2023
     public class Day16 : Day
     {
         Dictionary<Coordinate, char> Obstacles;
+        int MaxY;
         public Day16(string _input) : base(_input)
         {
             string Input = this.CheckFile(_input);
@@ -25,6 +26,7 @@ namespace Advent2023
                     }
                 }
             }
+            MaxY = strings.Length - 1;
         }
         public override Tuple<string, string> GetResult()
         {
@@ -34,14 +36,57 @@ namespace Advent2023
         {
             int ReturnValue = 0;
             HashSet<Coordinate> Visited = new HashSet<Coordinate>();
+            Beam Starter = new Beam(new Coordinate(MaxY, -1), 'E');
+            List<Beam> BeamList = new List<Beam>();
+            BeamList.Add(Starter);
+            while (BeamList.Count > 0)
+            {
+                List<Beam> Next = new List<Beam>();
+                foreach (Beam beam in BeamList)
+                {
+                    beam.Move();
+                    if (Obstacles.ContainsKey(beam.Position))
+                    {
+                        switch (Obstacles[beam.Position])
+                        {
+                            case '-':
+                                ;
+                                break;
+                            case '|':
+                                ;
+                                break;
+                            case '\\':
+                                ;
+                                break;
+                            case '/':
+                                ;
+                                break;
+                        }
+
+                    }
+                }
+            }
 
             return ReturnValue.ToString();
         }
         public string GetPartTwo()
         {
             int ReturnValue = 0;
-
             return ReturnValue.ToString();
         }
+    }
+    public class Beam
+    {
+        public Coordinate Position;
+        public char Direction;
+        public Beam(Coordinate position, char direction)
+        {
+
+        }
+        public void Move()
+        {
+            Position.MoveNSteps(Direction);
+        }
+
     }
 }
