@@ -62,8 +62,7 @@ namespace Advent2023
                                     case 2:
                                         Beam newOne = new Beam(beam);
                                         newOne.Turn(-1);
-                                        if (newOne.Position.IsInPositiveBounds(MaxX, MaxY))
-                                            Next.Add(newOne);
+                                        Next.Add(newOne);
                                         beam.Turn(1);
                                         break;
                                 };
@@ -79,8 +78,7 @@ namespace Advent2023
                                     case 3:
                                         Beam newOne = new Beam(beam);
                                         newOne.Turn(-1);
-                                        if (newOne.Position.IsInPositiveBounds(MaxX, MaxY))
-                                            Next.Add(newOne);
+                                        Next.Add(newOne);
                                         beam.Turn(1);
                                         break;
                                 };
@@ -113,16 +111,21 @@ namespace Advent2023
                                 break;
                         }
                     }
-                    if (beam.Position.IsInPositiveBounds(MaxX, MaxY) && !(Visited.ContainsKey(beam.Position) && Visited[beam.Position].Contains(beam.Direction)))
-                        Next.Add(new Beam(beam));
+                    Next.Add(new Beam(beam));
                 }
+                BeamList = new List<Beam>();
                 foreach (Beam b in Next)
+                {
+                    if (b.Position.IsInPositiveBounds(MaxX, MaxY) && !(Visited.ContainsKey(b.Position) && Visited[b.Position].Contains(b.Direction)))
+                        BeamList.Add(new Beam(b));
+                }
+                foreach (Beam b in BeamList)
                 {
                     if (!Visited.ContainsKey(b.Position))
                         Visited.Add(new Coordinate(b.Position), new HashSet<int>());
                     Visited[b.Position].Add(b.Direction);
+
                 }
-                BeamList = new List<Beam>(Next);
             }
             ReturnValue = Visited.Count;
             return ReturnValue;
