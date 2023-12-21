@@ -38,7 +38,7 @@ namespace Advent2023
             MaxY = strings.Length - 1;
             MaxX = strings[0].Length - 1;
             Fill = new HashSet<Coordinate>();
-            StartDirection = 2;
+            StartDirection = 3;
             ThePipe = new HashSet<Coordinate>();
         }
         public override Tuple<string, string> GetResult()
@@ -125,6 +125,8 @@ namespace Advent2023
                 int turn = 0;
                 Coordinate Right = new Coordinate(Here);
                 Right.MoveNSteps(Directions[Coordinate.Turn(Direction, 1)]);
+                if (Right.x != Start.x && Right.y != Start.y && !ThePipe.Contains(Right))
+                    Fill.Add(new Coordinate(Right));
                 if (Right.x == Start.x && Right.y == Start.y)
                 {
                     ;
@@ -133,8 +135,6 @@ namespace Advent2023
                         ;//Fuuuu
                     }
                 }
-                if (Right.x != Start.x && Right.y != Start.y && !ThePipe.Contains(Right))
-                    Fill.Add(new Coordinate(Right));
                 switch (Pipes[Here])
 
                 {
@@ -165,9 +165,11 @@ namespace Advent2023
                     default:
                         break;
                 }
+                Direction = Coordinate.Turn(Direction, turn);
+                Right = new Coordinate(Here);
+                Right.MoveNSteps(Directions[Coordinate.Turn(Direction, 1)]);
                 if (Right.x != Start.x && Right.y != Start.y && !ThePipe.Contains(Right))
                     Fill.Add(new Coordinate(Right));
-                Direction = Coordinate.Turn(Direction, turn);
                 Here.MoveNSteps(Directions[Direction]);
                 if (Pipes.ContainsKey(Here))
                     ;
