@@ -107,11 +107,12 @@ namespace Advent2023
         }
         public override bool Equals(object obj)
         {
-            return Equals(obj as Coordinate);
+            var other = obj as Coordinate;
+            return other != null && other.x == x && other.y == y;
         }
-        public bool Equals(Coordinate obj)
+        public bool Equals(Coordinate other)
         {
-            return obj != null && obj.x == x && obj.y == y;
+            return other != null && other.x == x && other.y == y;
         }
         public int CompareTo(Coordinate other)
         {
