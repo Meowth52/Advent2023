@@ -44,6 +44,11 @@ namespace Advent2023
                     break;
             }
         }
+        public static int Turn(int direction, int where)
+        {
+            int Direction = (direction + where + 4) % 4;
+            return Direction;
+        }
         public List<Coordinate> GetNeihbours(bool Diagonals = false)
         {
             List<Coordinate> ReturnList = new List<Coordinate>();
