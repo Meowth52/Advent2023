@@ -127,6 +127,23 @@ namespace Advent2023
             x = c.x;
             y = c.y;
         }
+        public static bool operator ==(Coordinate lhs, Coordinate rhs)
+        {
+            if (lhs is null)
+            {
+                if (rhs is null)
+                {
+                    return true;
+                }
+
+                // Only the left side is null.
+                return false;
+            }
+            // Equals handles case of null on right side.
+            return lhs.Equals(rhs);
+        }
+
+        public static bool operator !=(Coordinate lhs, Coordinate rhs) => !(lhs == rhs);
     }
     class CoordinateEqualityComparer : IEqualityComparer<Coordinate>
     {

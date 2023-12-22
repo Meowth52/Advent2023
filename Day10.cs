@@ -125,16 +125,8 @@ namespace Advent2023
                 int turn = 0;
                 Coordinate Right = new Coordinate(Here);
                 Right.MoveNSteps(Directions[Coordinate.Turn(Direction, 1)]);
-                if ((Right.x != Start.x || Right.y != Start.y) && !ThePipe.Contains(Right))
+                if (Right != Start && !ThePipe.Contains(Right))
                     Fill.Add(new Coordinate(Right));
-                if (Right.x == Start.x && Right.y == Start.y)
-                {
-                    ; //träff
-                    if (Right == Start)
-                    {
-                        ;//Fuuuu
-                    }
-                }
                 switch (Pipes[Here])
 
                 {
@@ -168,7 +160,7 @@ namespace Advent2023
                 Direction = Coordinate.Turn(Direction, turn);
                 Right = new Coordinate(Here);
                 Right.MoveNSteps(Directions[Coordinate.Turn(Direction, 1)]);
-                if ((Right.x != Start.x || Right.y != Start.y) && !ThePipe.Contains(Right))
+                if (Right != Start && !ThePipe.Contains(Right))
                     Fill.Add(new Coordinate(Right));
                 Here.MoveNSteps(Directions[Direction]);
                 if (Pipes.ContainsKey(Here))
