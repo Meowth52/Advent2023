@@ -129,7 +129,7 @@ namespace Advent2023
                     Fill.Add(new Coordinate(Right));
                 if (Right.x == Start.x && Right.y == Start.y)
                 {
-                    ;
+                    ; //träff
                     if (Right == Start)
                     {
                         ;//Fuuuu
