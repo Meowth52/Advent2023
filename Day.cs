@@ -36,6 +36,22 @@ namespace Advent2023
             }
             return Input;
         }
+        public Dictionary<Coordinate,char> ParseAnotherCoordinateMap(string input)
+        {
+            Dictionary<Coordinate,char> returnDic = new Dictionary<Coordinate,char>();
+            string[] strings = this.ParseStringArray(input);
+            for (int y = 0; y < strings.Length; y++)
+            {
+                for (int x = 0; x < strings[0].Length; x++)
+                {
+                    if (strings[y][x] != '.')
+                    {
+                        returnDic.Add(new Coordinate(x, strings.Length - (y + 1)), strings[y][x]);
+                    }
+                }
+            }
+            return returnDic;
+        }
 
         public string ParseJustOneLine(string input)
         {
